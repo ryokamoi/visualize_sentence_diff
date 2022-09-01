@@ -36,7 +36,7 @@ def diff_html_from_sign(token_list: List[str], sign_list: List[int],
     return " ".join(output_list)
 
 
-def compuare_sentence_and_generate_html(sentence_x: str, sentence_y: str) -> Tuple[str, str]:
+def compuare_sentence_and_generate_html(sentence_x: str, sentence_y: str, transparency: float=.5) -> Tuple[str, str]:
     spacy_nlp = get_spacy_nlp()
     list_x = [str(s) for s in list(spacy_nlp(sentence_x))]
     list_y = [str(s) for s in list(spacy_nlp(sentence_y))]
@@ -57,9 +57,9 @@ def compuare_sentence_and_generate_html(sentence_x: str, sentence_y: str) -> Tup
     
     # html
     x_html = diff_html_from_sign(token_list=list_x, sign_list=sign_for_x,
-                                 tag_front='<span style="background-color:rgba(255,0,0,0.8)">')
+                                 tag_front=f'<span style="background-color:rgba(255,0,0,{transparency})">')
     y_html = diff_html_from_sign(token_list=list_y, sign_list=sign_for_y,
-                                 tag_front='<span style="background-color:rgba(0,255,0,0.8)">')
+                                 tag_front=f'<span style="background-color:rgba(0,255,0,{transparency})">')
 
     return x_html, y_html
 

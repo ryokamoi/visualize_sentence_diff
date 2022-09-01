@@ -4,11 +4,11 @@ build-backend = "hatchling.build"
 
 [project]
 name = "visualize_sentence_diff"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name="Ryo Kamoi", email="ryokamoi.jp@gmail.com" },
 ]
-description = ""
+description = "A python library to visualize differences between two sentences."
 readme = "README.md"
 license = { file="LICENSE" }
 requires-python = ">=3.7"
