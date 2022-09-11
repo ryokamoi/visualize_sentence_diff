@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Union, Optional
 from difflib import Differ
 
 import spacy
@@ -64,19 +64,47 @@ def compuare_sentence_and_generate_html(sentence_x: str, sentence_y: str, transp
     return x_html, y_html
 
 
-def visualize_sentence_diff(sentence_x: str, sentence_y: str) -> None:
-    html_x, html_y = compuare_sentence_and_generate_html(sentence_x, sentence_y)
+def visualize_sentence_diff(sentence_x: Union[str, List[str]], sentence_y: Union[str, List[str]],
+                            x_name: str="sentence x", y_name: str="sentence_y") -> None:
+    """Visualize differences in two sentences in IPython
 
+    Args:
+        sentence_x (Union[str, List[str]]):
+        sentence_y (Union[str, List[str]]):
+        x_name (str, optional): Defaults to "sentence x".
+        y_name (str, optional): Defaults to "sentence_y".
+    """
+
+    if type(sentence_x) == str and type(sentence_y) == str:
+        sentence_x = [sentence_x]
+        sentence_y = [sentence_y]
+    else:
+        if not (type(sentence_x) == list and type(sentence_y) == list):
+            raise Exception("Invalid input type. sentence_x and sentence_y should be (str, str) or (List[str], List[str]).")
+        
+    if len(sentence_x) != len(sentence_y):
+        raise Exception("sentence_x and sentence_y should be lists of strings with the same lengths.")
+
+    # generate html
     output_html = f'''
         <table>
             <tr>
-                <td>sentence x</td>
-                <td>sentence y</td>
+                <td>{x_name}</td>
+                <td>{y_name}</td>
             </tr>
-            <tr>
-                <td>{html_x}</td>
-                <td>{html_y}</td>
-            </tr>
+    '''
+    
+    for x, y in zip(sentence_x, sentence_y):
+        html_x, html_y = compuare_sentence_and_generate_html(x, y)
+        
+        output_html += f'''
+                <tr>
+                    <td>{html_x}</td>
+                    <td>{html_y}</td>
+                </tr>
+        '''
+    
+    output_html += f'''
         </table>
     '''
 
